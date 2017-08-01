@@ -1,5 +1,7 @@
 # Redis + Spring Boot POC
 
+[hack-唐飞雄.adoc](./hack-唐飞雄.adoc)
+
 ## Components:
 ##### 1. Cache
 ######  a. Redis (latest)
