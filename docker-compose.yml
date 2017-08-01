@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  redis:
+    image: gcr.io/cloudjlb-eventer/redis-sentinel:latest
+    restart: always
+    volumes:
+    - /tmp/docker-compose/spring-boot-redis/redis:/var/redis-data
+
+  api:
+    environment:
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+    image: gcr.io/cloudjlb-eventer/spring-boot-app:latest
+    ports:
+    - "12380:8080"
+    restart: always
+
+  frontend:
+    restart: always
+    image: gcr.io/cloudjlb-eventer/web-frontend:latest
+    depends_on:
+    - redis
+    - api
+    ports:
+    - "23480:80"
+    environment:
+    - SPRING_BOOT_APP_APIHOST=api
+    - SPRING_BOOT_APP_APIPORT=api

@@ -1,0 +1,1967 @@
+= Instruction
+
+Example
+----
+[vagrant@localhost spring-boot-redis-k8s]$ /opt/gradle/gradle-3.5/bin/gradle :buildBootImage :buildFeImage :buildRedisImage
+Starting a Gradle Daemon (subsequent builds will be faster)
+Download...snip...
+The Task.leftShift(Closure) method has been deprecated and is scheduled to be removed in Gradle 5.0. Please use Task.doLast(Action) instead.
+        at build_a3dx6hpgora1ltj4emgmnwwvd.run(/Users/fanhongling/Downloads/workspace/src/github.com/johnlabarge/spring-boot-redis-k8s/build.gradle:77)
+:buildBootImage
+Sending build context to Docker daemon 366.6 kB
+
+Step 1 : FROM frolvlad/alpine-oraclejdk8:slim
+Trying to pull repository docker.io/frolvlad/alpine-oraclejdk8 ... 
+slim: Pulling from docker.io/frolvlad/alpine-oraclejdk8
+88286f41530e: Already exists
+77f0b91330fc: Pulling fs layer
+b61ddcbd4d37: Pulling fs layer
+77f0b91330fc: Verifying Checksum
+77f0b91330fc: Download complete
+77f0b91330fc: Pull completeG
+77f0b91330fc: Pull complete
+b61ddcbd4d37: Verifying Checksum
+b61ddcbd4d37: Download complete
+b61ddcbd4d37: Pull complete
+b61ddcbd4d37: Pull complete
+Digest: sha256:f326b678c36fb8e7fcf5c3b0d717f152d6cdd63fac93c07802028c5b2e8f18ad
+Status: Downloaded newer image for docker.io/frolvlad/alpine-oraclejdk8:slim
+ ---> ab80b2982a7f
+Step 2 : RUN apk update
+ ---> Running in 1596df509c5b
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz
+v3.6.2-41-g11187df7f2 [http://dl-cdn.alpinelinux.org/alpine/v3.6/main]
+v3.6.2-32-g6f53cfcccd [http://dl-cdn.alpinelinux.org/alpine/v3.6/community]
+OK: 8438 distinct packages available
+ ---> fe02d69a785d
+Removing intermediate container 1596df509c5b
+Step 3 : RUN apk add bash
+ ---> Running in c9e7ecb716f2
+(1/5) Installing ncurses-terminfo-base (6.0-r7)
+(2/5) Installing ncurses-terminfo (6.0-r7)
+(3/5) Installing ncurses-libs (6.0-r7)
+(4/5) Installing readline (6.3.008-r5)
+(5/5) Installing bash (4.3.48-r1)
+Executing bash-4.3.48-r1.post-install
+Executing busybox-1.26.2-r5.trigger
+Executing glibc-bin-2.25-r0.trigger
+OK: 19 MiB in 19 packages
+ ---> 52d1e393ee1a
+Removing intermediate container c9e7ecb716f2
+Step 4 : RUN apk add ca-certificates
+ ---> Running in bcbac820624c
+(1/1) Installing ca-certificates (20161130-r2)
+Executing busybox-1.26.2-r5.trigger
+Executing ca-certificates-20161130-r2.trigger
+OK: 19 MiB in 20 packages
+ ---> 1238ac31c577
+Removing intermediate container bcbac820624c
+Step 5 : RUN update-ca-certificates
+ ---> Running in 34be8504f59c
+WARNING: ca-certificates.crt does not contain exactly one certificate or CRL: skipping
+<--- ---> c7ad6f77e653CUTING
+Removing intermediate container 34be8504f59c
+Step 6 : RUN apk add openssl
+ ---> Running in 8fb1df0ece9a
+(1/3) Installing libcrypto1.0 (1.0.2k-r0)
+(2/3) Installing libssl1.0 (1.0.2k-r0)
+(3/3) Installing openssl (1.0.2k-r0)
+Executing busybox-1.26.2-r5.trigger
+Executing ca-certificates-20161130-r2.trigger
+Executing glibc-bin-2.25-r0.trigger
+OK: 23 MiB in 23 packages
+ ---> 7de0bb234532
+Removing intermediate container 8fb1df0ece9a
+Step 7 : RUN wget https://services.gradle.org/distributions/gradle-3.3-bin.zip
+ ---> Running in 78412d232e3a
+Connecting to services.gradle.org (104.16.173.166:443)
+<---Connecting to downloads.gradle.org (104.16.174.166:443)
+<---gradle-3.3-bin.zip     0% |                               |   254k                    0:04:28 ETA
+<---gradle-3.3-bin.zip     1% |                               |                             1278k  0:01:45 ETA
+<---...snip...
+gradle-3.3-bin.zip   100% |*******************************| 68476k  0:00:00 ETA
+
+     ---> ae470378f4e3
+Removing intermediate container 78412d232e3a
+Step 8 : RUN unzip gradle-3.3-bin.zip && rm gradle-3.3-bin.zip
+ ---> Running in a2bfdb8ae3cf
+Archive:  gradle-3.3-bin.zip
+   creating: gradle-3.3/
+  inflating: gradle-3.3/LICENSE
+...snip...
+ ---> d41d970307e5
+Removing intermediate container a2bfdb8ae3cf
+Step 9 : RUN mv gradle-3.3 /usr/local
+ ---> Running in 051d725fcb4f
+ ---> 2e8004a0c818
+Removing intermediate container 051d725fcb4f
+Step 10 : RUN ln -s /usr/local/gradle-3.3/bin/gradle bin/gradle
+ ---> Running in 50452fe4548c
+ ---> ace8b37340ff
+Removing intermediate container 50452fe4548c
+Step 11 : RUN apk update && apk add libstdc++ && rm -rf /var/cache/apk/*
+ ---> Running in 6d1a4bc4fb41
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz
+v3.6.2-41-g11187df7f2 [http://dl-cdn.alpinelinux.org/alpine/v3.6/main]
+v3.6.2-32-g6f53cfcccd [http://dl-cdn.alpinelinux.org/alpine/v3.6/community]
+OK: 8438 distinct packages available
+(1/1) Installing libstdc++ (6.3.0-r4)
+Executing glibc-bin-2.25-r0.trigger
+OK: 24 MiB in 24 packages
+ ---> 839d17db813c
+Removing intermediate container 6d1a4bc4fb41
+Step 12 : COPY src/ /opt/boot-app/src
+ ---> f1a3e52992f0
+Removing intermediate container 472c960d7ee6
+Step 13 : COPY build.gradle /opt/boot-app
+ ---> 5ff51a2f2c24
+Removing intermediate container 2bc56a40b44e
+Step 14 : WORKDIR /opt/boot-app
+ ---> Running in c2f330700c70
+ ---> b40462b6cb96
+Removing intermediate container c2f330700c70
+Step 15 : RUN gradle build
+ ---> Running in e715278c7a99
+Starting a Gradle Daemon (subsequent builds will be faster)
+Download...snip...
+The Task.leftShift(Closure) method has been deprecated and is scheduled to be removed in Gradle 5.0. Please use Task.doLast(Action) instead.
+        at build_92u3f8cfs6oglc9sxkvej1r39.run(/opt/boot-app/build.gradle:77)
+:compileJava--> 0% EXECUTING
+Download...snip...
+Download https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter/1.4.2.RELEASE/spring-boot-starter-1.4.2.RELEASEDownload https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-starter-tomcat/1.4.2.RELEASE/spring-boot-starter-tomcatDownload https://repo1.maven.org/maven2/org/hibernate/hibernate-validator/5.2.4.Final/hibernate-validator-5.2.4.Final.pom
+...snip...
+Download https://repo1.maven.org/maven2/io/grpc/grpc-all/1.0.1/grpc-all-1.0.1.pom
+Download https://repo1.maven.org/maven2/io/grpc/grpc-auth/1.0.1/grpc-auth-1.0.1.pom
+Download https://repo1.maven.org/maven2/io/grpc/grpc-netty/1.0.1/grpc-netty-1.0.1.pom
+Download https://repo1.maven.org/maven2/io/grpc/grpc-stub/1.0.1/grpc-stub-1.0.1.pom
+Download https://repo1.maven.org/maven2/io/grpc/grpc-protobuf-nano/1.0.1/grpc-protobuf-nano-1.0.1.pom
+Download https://repo1.maven.org/maven2/io/grpc/grpc-okhttp/1.0.1/grpc-okhttp-1.0.1.pom
+...snip...
+Download https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java/3.0.0/protobuf-java-3.0.0.jar
+Download https://repo1.maven.org/maven2/io/grpc/grpc-protobuf/1.0.1/grpc-protobuf-1.0.1.jar
+Download https://repo1.maven.org/maven2/com/google/api/gax/0.0.25/gax-0.0.25.jar
+Download https://repo1.maven.org/maven2/com/google/api/grpc/grpc-google-common-protos/0.1.3/grpc-google-common-protos-0.1.3.jar
+Download https://repo1.maven.org/maven2/com/google/api/grpc/grpc-google-iam-v1/0.1.3/grpc-google-iam-v1-0.1.3.jar
+...snip...
+Download https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java-util/3.0.0/protobuf-java-util-3.0.0.jar
+Download https://repo1.maven.org/maven2/io/grpc/grpc-core/1.0.1/grpc-core-1.0.1.jar
+Download https://repo1.maven.org/maven2/io/grpc/grpc-protobuf-lite/1.0.1/grpc-protobuf-lite-1.0.1.jar
+...snip...
+:compileGroovy UP-TO-DATEING
+:processResources UP-TO-DATE
+:classes
+:findMainClass
+:jar
+:bootRepackage> 0% EXECUTING
+:assemble
+:compileTestJava UP-TO-DATE
+:compileTestGroovy UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:check UP-TO-DATE
+:build
+
+BUILD SUCCESSFUL
+
+Total time: 8 mins 37.518 secs
+ ---> 6082ad23ddac
+Removing intermediate container e715278c7a99
+Step 16 : RUN cp build/libs/spring-boot-app-0.1.0.jar /app.jar
+ ---> Running in 26f7d0c7042f
+ ---> 84b6fbf85390
+Removing intermediate container 26f7d0c7042f
+Step 17 : ENTRYPOINT sh -c java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar --debug
+ ---> Running in 30a2536853ec
+ ---> 605bedfdfb34
+Removing intermediate container 30a2536853ec
+Successfully built 605bedfdfb34
+:buildFeImage
+Sending build context to Docker daemon 54.78 kB
+Step 1 : FROM nginx
+ ---> b8efb18f159b
+Step 2 : COPY eventer/nginx.conf /etc/nginx/nginx.conf
+ ---> 11056086d51a
+Removing intermediate container c8c22cfe9965
+Step 3 : COPY eventer/ /opt/src/eventer
+ ---> 8f3379969091
+Removing intermediate container 1638d3d9625f
+Step 4 : RUN apt-get update
+ ---> Running in d5aa6c5e151e
+Get:2 http://nginx.org/packages/mainline/debian stretch InRelease [2854 B]
+Get:3 http://security.debian.org stretch/updates InRelease [62.9 kB]
+Ign:1 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:5 http://nginx.org/packages/mainline/debian stretch/nginx amd64 Packages [11.1 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [88.5 kB]
+Get:7 http://security.debian.org stretch/updates/main amd64 Packages [144 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2373 B]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [9497 kB]
+Fetched 9927 kB in 9s (1094 kB/s)
+Reading package lists...UTING
+ ---> fcefc14b6337
+Removing intermediate container d5aa6c5e151e
+Step 5 : RUN apt-get install -y curl
+ ---> Running in f10f0f747a75
+Reading package lists...UTING
+Building dependency tree...NG
+Reading state information...
+The following additional packages will be installed:
+  ca-certificates krb5-locales libcurl3 libffi6 libgmp10 libgnutls30
+  libgssapi-krb5-2 libhogweed4 libidn11 libidn2-0 libk5crypto3 libkeyutils1
+  libkrb5-3 libkrb5support0 libldap-2.4-2 libldap-common libnettle6
+  libnghttp2-14 libp11-kit0 libpsl5 librtmp1 libsasl2-2 libsasl2-modules
+  libsasl2-modules-db libssh2-1 libssl1.0.2 libtasn1-6 libunistring0 openssl
+  publicsuffix
+Suggested packages:
+  gnutls-bin krb5-doc krb5-user libsasl2-modules-gssapi-mit
+  | libsasl2-modules-gssapi-heimdal libsasl2-modules-ldap libsasl2-modules-otp
+  libsasl2-modules-sql
+The following NEW packages will be installed:
+  ca-certificates curl krb5-locales libcurl3 libffi6 libgmp10 libgnutls30
+  libgssapi-krb5-2 libhogweed4 libidn11 libidn2-0 libk5crypto3 libkeyutils1
+  libkrb5-3 libkrb5support0 libldap-2.4-2 libldap-common libnettle6
+  libnghttp2-14 libp11-kit0 libpsl5 librtmp1 libsasl2-2 libsasl2-modules
+  libsasl2-modules-db libssh2-1 libssl1.0.2 libtasn1-6 libunistring0 openssl
+  publicsuffix
+0 upgraded, 31 newly installed, 0 to remove and 0 not upgraded.
+Need to get 6594 kB of archives.
+After this operation, 16.8 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libssl1.0.2 amd64 1.0.2l-2 [1294 kB]
+...snip...
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 6093 kB in 2min 16s (44.6 kB/s)
+Selecting previously unselected package libssl1.0.2:amd64.
+(Reading database ... 
+7010 files and directories currently installed.)
+...snip...
+Setting up libnettle6:amd64 (3.3-1+b1) ...
+...snip...
+debconf: unable to initialize frontend: Dialog
+...
+Running hooks in /etc/ca-certificates/update.d...
+done.
+ ---> 1bd67c383528
+Removing intermediate container f10f0f747a75
+Step 6 : RUN curl -sl https://deb.nodesource.com/setup_6.x | sh
+ ---> Running in 7a7cdf2e282f
+sh: 173: [: X_6.x: unexpected operator
+
+## Installing the NodeSource Node.js v6.x repo...
+
+
+## Populating apt-get cache...
+
++ apt-get update
+Hit:1 http://security.debian.org stretch/updates InRelease
+Ign:2 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Hit:4 http://nginx.org/packages/mainline/debian stretch InRelease
+Hit:3 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+Hit:5 http://cdn-fastly.deb.debian.org/debian stretch Release
+Reading package lists...UTING
+
+## Installing packages required for setup: apt-transport-https lsb-release...
+
++ apt-get install -y apt-transport-https lsb-release > /dev/null 2>&1
+sh: 336: -----> 33Syntax error: Bad fd number
+Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='ANSI_X3.4-1968'>
+BrokenPipeError: [Errno 32] Broken pipe
+sh: 242: [[: not found
+    sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+## Confirming "stretch" is supported...
+
++ curl -sLf -o /dev/null 'https://deb.nodesource.com/node_6.x/dists/stretch/Release'
+
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 250: [: Xstretch: unexpected operator
+sh: 278: [: Xstretch: unexpected operator
+    sh: 299: [[: not found
+
+## Adding the NodeSource signing key to your keyring...
+
++ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+E: gnupg, gnupg2 and gnupg1 do not seem to be installed, but one of them is required for this operation
+> :b(23) Failed writing body
+Error executing command, exiting
+The command '/bin/sh -c curl -sl https://deb.nodesource.com/setup_6.x | sh' returned a non-zero code: 1
+:buildFeImage FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':buildFeImage'.
+> Process 'command 'docker'' finished with non-zero exit value 1
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+
+BUILD FAILED
+
+Total time: 24 mins 27.917 secs
+----
+
+更改
+
+*. 使用application.properties，支持redis和sentinel
+*. 由于nginx:latest使用debian:stretch，升级了angluar版本，angular/cli版本，完善Dockerfile
+*. 用于docker-compose.yml
+
+Redis
+----
+[vagrant@localhost spring-boot-redis-k8s]$ /opt/gradle/gradle-3.5/bin/gradle :buildRedisImage
+The Task.leftShift(Closure) method has been deprecated and is scheduled to be removed in Gradle 5.0. Please use Task.doLast(Action) instead.
+        at build_a3dx6hpgora1ltj4emgmnwwvd.run(/Users/fanhongling/Downloads/workspace/src/github.com/johnlabarge/spring-boot-redis-k8s/build.gradle:77)
+:buildRedisImage
+Sending build context to Docker daemon 4.608 kB
+
+Step 1 : FROM redis
+Trying to pull repository docker.io/library/redis ... 
+latest: Pulling from docker.io/library/redis
+5233d9aed181: Pulling fs layer
+ca1b33d3f114: Pulling fs layer
+920cdc17d3c2: Pulling fs layer
+6f939f708ee9: Pulling fs layer
+4ba0e186289d: Pulling fs layer
+1e448b71a4f0: Pulling fs layer
+6f939f708ee9: Waiting
+4ba0e186289d: Waiting
+1e448b71a4f0: Waiting
+ca1b33d3f114: Verifying Checksum
+ca1b33d3f114: Download complete
+920cdc17d3c2: Verifying Checksum
+920cdc17d3c2: Download complete
+4ba0e186289d: Verifying Checksum
+4ba0e186289d: Download complete
+6f939f708ee9: Verifying Checksum
+6f939f708ee9: Download complete
+1e448b71a4f0: Download complete
+5233d9aed181: Verifying Checksum
+5233d9aed181: Download complete
+5233d9aed181: Pull complete
+5233d9aed181: Pull complete
+ca1b33d3f114: Pull complete
+ca1b33d3f114: Pull complete
+920cdc17d3c2: Pull complete
+920cdc17d3c2: Pull complete
+6f939f708ee9: Pull complete
+6f939f708ee9: Pull complete
+4ba0e186289d: Pull completeG
+4ba0e186289d: Pull complete
+1e448b71a4f0: Pull complete
+1e448b71a4f0: Pull complete
+Digest: sha256:a7776895af32e34b1fef997e26c79fa988b40c5cf2a3fb48dc22e0584b648d82
+Status: Downloaded newer image for docker.io/redis:latest
+ ---> d4f259423416
+Step 2 : COPY redis.conf /usr/local/etc/redis/
+ ---> 9a30c1138e2e
+Removing intermediate container df3b91f2f38e
+Step 3 : COPY docker-entrypoint.sh /usr/local/bin
+ ---> fe4f205ff16b
+Removing intermediate container bb818ff352dd
+Step 4 : RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ ---> Running in 97d46051272e
+ ---> a906ffc902f4
+Removing intermediate container 97d46051272e
+Step 5 : ENTRYPOINT /usr/local/bin/docker-entrypoint.sh
+ ---> Running in b5a6721709c9
+ ---> 5d5bdcb887a8
+Removing intermediate container b5a6721709c9
+Successfully built 5d5bdcb887a8
+
+BUILD SUCCESSFUL
+
+Total time: 49.404 secs
+----
+
+Frontend
+----
+[vagrant@localhost eventer]$ npm install --save-dev @angular/cli@1.2.6
+[vagrant@localhost eventer]$ npm install .
+eventer@0.0.0 /Users/fanhongling/Downloads/workspace/src/github.com/johnlabarge/spring-boot-redis-k8s/web-frontend/eventer
+├── @angular/forms@4.3.2 
+├── @angular/http@4.3.2 
+├── @angular/platform-browser@4.3.2 
+├── @angular/platform-browser-dynamic@4.3.2 
+└── @angular/router@4.3.2 
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+----
+
+ng
+----
+[vagrant@localhost eventer]$ find ./node_modules/ -name ng
+./node_modules/.bin/ng
+./node_modules/@angular/cli/bin/ng
+./node_modules/@angular/cli/blueprints/ng
+----
+
+Build
+----
+[vagrant@localhost spring-boot-redis-k8s]$ /opt/gradle/gradle-3.5/bin/gradle :buildFeImage
+The Task.leftShift(Closure) method has been deprecated and is scheduled to be removed in Gradle 5.0. Please use Task.doLast(Action) instead.
+        at build_a3dx6hpgora1ltj4emgmnwwvd.run(/Users/fanhongling/Downloads/workspace/src/github.com/johnlabarge/spring-boot-redis-k8s/build.gradle:77)
+:buildFeImage
+Sending build context to Docker daemon 557.1 kB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Step 1 : FROM nginx
+ ---> b8efb18f159b
+Step 2 : COPY eventer/nginx.conf /etc/nginx/nginx.conf
+ ---> Using cache
+ ---> 11056086d51a
+Step 3 : COPY eventer/ /opt/src/eventer
+ ---> 6ca432845c12
+Removing intermediate container e0f0efe02acd
+Step 4 : RUN apt-get update
+ ---> Running in 490c56a4116e
+Get:1 http://nginx.org/packages/mainline/debian stretch InRelease [2854 B]
+Get:2 http://security.debian.org stretch/updates InRelease [62.9 kB]
+Get:4 http://nginx.org/packages/mainline/debian stretch/nginx amd64 Packages [11.1 kB]
+Ign:3 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease [88.5 kB]
+Get:7 http://security.debian.org stretch/updates/main amd64 Packages [144 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch Release [118 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch Release.gpg [2373 B]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 Packages [9497 kB]
+Fetched 9927 kB in 16s (617 kB/s)
+Reading package lists...TING
+ ---> e4fb8036334e
+Removing intermediate container 490c56a4116e
+Step 5 : RUN apt-get install -y curl gnupg2
+ ---> Running in 68ce8d8d2eee
+Reading package lists...TING
+Building dependency tree...G
+Reading state information...
+The following additional packages will be installed:
+  ca-certificates dirmngr gnupg gnupg-agent gnupg-l10n krb5-locales libassuan0
+  libcurl3 libffi6 libgmp10 libgnutls30 libgssapi-krb5-2 libhogweed4 libidn11
+  libidn2-0 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libksba8
+  libldap-2.4-2 libldap-common libnettle6 libnghttp2-14 libnpth0 libp11-kit0
+  libpsl5 libreadline7 librtmp1 libsasl2-2 libsasl2-modules
+  libsasl2-modules-db libsqlite3-0 libssh2-1 libssl1.0.2 libtasn1-6
+  libunistring0 openssl pinentry-curses publicsuffix readline-common
+Suggested packages:
+  dbus-user-session libpam-systemd pinentry-gnome3 tor parcimonie xloadimage
+  scdaemon gnutls-bin krb5-doc krb5-user libsasl2-modules-gssapi-mit
+  | libsasl2-modules-gssapi-heimdal libsasl2-modules-ldap libsasl2-modules-otp
+  libsasl2-modules-sql pinentry-doc readline-doc
+The following NEW packages will be installed:
+  ca-certificates curl dirmngr gnupg gnupg-agent gnupg-l10n gnupg2
+  krb5-locales libassuan0 libcurl3 libffi6 libgmp10 libgnutls30
+  libgssapi-krb5-2 libhogweed4 libidn11 libidn2-0 libk5crypto3 libkeyutils1
+  libkrb5-3 libkrb5support0 libksba8 libldap-2.4-2 libldap-common libnettle6
+  libnghttp2-14 libnpth0 libp11-kit0 libpsl5 libreadline7 librtmp1 libsasl2-2
+  libsasl2-modules libsasl2-modules-db libsqlite3-0 libssh2-1 libssl1.0.2
+  libtasn1-6 libunistring0 openssl pinentry-curses publicsuffix
+  readline-common
+0 upgraded, 43 newly installed, 0 to remove and 0 not upgraded.
+Need to get 11.1 MB of archives.
+After this operation, 28.3 MB of additional disk space will be used.
+Get:1 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libassuan0 amd64 2.4.3-2 [42.5 kB]
+Get:2 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 pinentry-curses amd64 1.0.0-2 [50.5 kB]
+Get:3 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnpth0 amd64 1.3-1 [14.6 kB]
+Get:4 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 readline-common all 7.0-3 [70.4 kB]
+Get:5 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libreadline7 amd64 7.0-3 [151 kB]
+Get:6 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gnupg-agent amd64 2.1.18-6 [554 kB]
+Get:7 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libksba8 amd64 1.3.5-2 [99.7 kB]
+Get:8 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libsqlite3-0 amd64 3.16.2-5 [572 kB]
+Get:9 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gnupg amd64 2.1.18-6 [1126 kB]
+Get:10 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libssl1.0.2 amd64 1.0.2l-2 [1294 kB]
+Get:11 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 krb5-locales all 1.15-1 [93.5 kB]
+Get:12 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgmp10 amd64 2:6.1.2+dfsg-1 [253 kB]
+Get:13 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnettle6 amd64 3.3-1+b1 [191 kB]
+Get:14 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libhogweed4 amd64 3.3-1+b1 [136 kB]
+Get:15 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libidn11 amd64 1.33-1 [115 kB]
+Get:16 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libffi6 amd64 3.2.1-6 [20.4 kB]
+Get:17 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libp11-kit0 amd64 0.23.3-2 [111 kB]
+Get:18 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libtasn1-6 amd64 4.10-1.1 [50.4 kB]
+Get:19 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgnutls30 amd64 3.5.8-5+deb9u2 [895 kB]
+Get:20 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libkeyutils1 amd64 1.5.9-9 [12.4 kB]
+Get:21 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libkrb5support0 amd64 1.15-1 [61.7 kB]
+Get:22 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libk5crypto3 amd64 1.15-1 [119 kB]
+Get:23 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libkrb5-3 amd64 1.15-1 [311 kB]
+Get:24 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libgssapi-krb5-2 amd64 1.15-1 [154 kB]
+Get:25 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libsasl2-modules-db amd64 2.1.27~101-g0780600+dfsg-3 [68.2 kB]
+Get:26 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libsasl2-2 amd64 2.1.27~101-g0780600+dfsg-3 [105 kB]
+Get:27 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libldap-common all 2.4.44+dfsg-5 [85.0 kB]
+Get:28 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libldap-2.4-2 amd64 2.4.44+dfsg-5 [218 kB]
+Get:29 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 openssl amd64 1.1.0f-3 [725 kB]
+Get:30 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 ca-certificates all 20161130+nmu1 [196 kB]
+Get:31 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libunistring0 amd64 0.9.6+really0.9.3-0.1 [279 kB]
+Get:32 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libidn2-0 amd64 0.16-1 [60.6 kB]
+Get:33 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libnghttp2-14 amd64 1.18.1-1 [79.1 kB]
+Get:34 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libpsl5 amd64 0.17.0-3 [41.8 kB]
+Get:35 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-1+b1 [60.4 kB]
+Get:36 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libssh2-1 amd64 1.7.0-1 [138 kB]
+Get:37 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libcurl3 amd64 7.52.1-5 [291 kB]
+Get:38 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 curl amd64 7.52.1-5 [227 kB]
+Get:39 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 dirmngr amd64 2.1.18-6 [595 kB]
+Get:40 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gnupg2 all 2.1.18-6 [299 kB]
+Get:41 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 libsasl2-modules amd64 2.1.27~101-g0780600+dfsg-3 [102 kB]
+Get:42 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 gnupg-l10n all 2.1.18-6 [892 kB]
+Get:43 http://cdn-fastly.deb.debian.org/debian stretch/main amd64 publicsuffix all 20170424.0717-1 [98.2 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 11.1 MB in 6s (1623 kB/s)
+Selecting previously unselected package libassuan0:amd64.
+(Reading database ... 
+
+
+
+
+
+
+
+
+
+
+
+Preparing to unpack .../00-libassuan0_2.4.3-2_amd64.deb ...
+Unpacking libassuan0:amd64 (2.4.3-2) ...
+Selecting previously unselected package pinentry-curses.
+Preparing to unpack .../01-pinentry-curses_1.0.0-2_amd64.deb ...
+Unpacking pinentry-curses (1.0.0-2) ...
+Selecting previously unselected package libnpth0:amd64.
+Preparing to unpack .../02-libnpth0_1.3-1_amd64.deb ...
+Unpacking libnpth0:amd64 (1.3-1) ...
+Selecting previously unselected package readline-common.
+Preparing to unpack .../03-readline-common_7.0-3_all.deb ...
+Unpacking readline-common (7.0-3) ...
+Selecting previously unselected package libreadline7:amd64.
+Preparing to unpack .../04-libreadline7_7.0-3_amd64.deb ...
+Unpacking libreadline7:amd64 (7.0-3) ...
+Selecting previously unselected package gnupg-agent.
+Preparing to unpack .../05-gnupg-agent_2.1.18-6_amd64.deb ...
+Unpacking gnupg-agent (2.1.18-6) ...
+Selecting previously unselected package libksba8:amd64.
+Preparing to unpack .../06-libksba8_1.3.5-2_amd64.deb ...
+Unpacking libksba8:amd64 (1.3.5-2) ...
+Selecting previously unselected package libsqlite3-0:amd64.
+Preparing to unpack .../07-libsqlite3-0_3.16.2-5_amd64.deb ...
+Unpacking libsqlite3-0:amd64 (3.16.2-5) ...
+Selecting previously unselected package gnupg.
+Preparing to unpack .../08-gnupg_2.1.18-6_amd64.deb ...
+Unpacking gnupg (2.1.18-6) ...
+Selecting previously unselected package libssl1.0.2:amd64.
+Preparing to unpack .../09-libssl1.0.2_1.0.2l-2_amd64.deb ...
+Unpacking libssl1.0.2:amd64 (1.0.2l-2) ...
+Selecting previously unselected package krb5-locales.
+Preparing to unpack .../10-krb5-locales_1.15-1_all.deb ...
+Unpacking krb5-locales (1.15-1) ...
+Selecting previously unselected package libgmp10:amd64.
+Preparing to unpack .../11-libgmp10_2%3a6.1.2+dfsg-1_amd64.deb ...
+Unpacking libgmp10:amd64 (2:6.1.2+dfsg-1) ...
+Selecting previously unselected package libnettle6:amd64.
+Preparing to unpack .../12-libnettle6_3.3-1+b1_amd64.deb ...
+Unpacking libnettle6:amd64 (3.3-1+b1) ...
+Selecting previously unselected package libhogweed4:amd64.
+Preparing to unpack .../13-libhogweed4_3.3-1+b1_amd64.deb ...
+Unpacking libhogweed4:amd64 (3.3-1+b1) ...
+Selecting previously unselected package libidn11:amd64.
+Preparing to unpack .../14-libidn11_1.33-1_amd64.deb ...
+Unpacking libidn11:amd64 (1.33-1) ...
+Selecting previously unselected package libffi6:amd64.
+Preparing to unpack .../15-libffi6_3.2.1-6_amd64.deb ...
+Unpacking libffi6:amd64 (3.2.1-6) ...
+Selecting previously unselected package libp11-kit0:amd64.
+Preparing to unpack .../16-libp11-kit0_0.23.3-2_amd64.deb ...
+Unpacking libp11-kit0:amd64 (0.23.3-2) ...
+Selecting previously unselected package libtasn1-6:amd64.
+Preparing to unpack .../17-libtasn1-6_4.10-1.1_amd64.deb ...
+Unpacking libtasn1-6:amd64 (4.10-1.1) ...
+Selecting previously unselected package libgnutls30:amd64.
+Preparing to unpack .../18-libgnutls30_3.5.8-5+deb9u2_amd64.deb ...
+Unpacking libgnutls30:amd64 (3.5.8-5+deb9u2) ...
+Selecting previously unselected package libkeyutils1:amd64.
+Preparing to unpack .../19-libkeyutils1_1.5.9-9_amd64.deb ...
+Unpacking libkeyutils1:amd64 (1.5.9-9) ...
+Selecting previously unselected package libkrb5support0:amd64.
+Preparing to unpack .../20-libkrb5support0_1.15-1_amd64.deb ...
+Unpacking libkrb5support0:amd64 (1.15-1) ...
+Selecting previously unselected package libk5crypto3:amd64.
+Preparing to unpack .../21-libk5crypto3_1.15-1_amd64.deb ...
+Unpacking libk5crypto3:amd64 (1.15-1) ...
+Selecting previously unselected package libkrb5-3:amd64.
+Preparing to unpack .../22-libkrb5-3_1.15-1_amd64.deb ...
+Unpacking libkrb5-3:amd64 (1.15-1) ...
+Selecting previously unselected package libgssapi-krb5-2:amd64.
+Preparing to unpack .../23-libgssapi-krb5-2_1.15-1_amd64.deb ...
+Unpacking libgssapi-krb5-2:amd64 (1.15-1) ...
+Selecting previously unselected package libsasl2-modules-db:amd64.
+Preparing to unpack .../24-libsasl2-modules-db_2.1.27~101-g0780600+dfsg-3_amd64.deb ...
+Unpacking libsasl2-modules-db:amd64 (2.1.27~101-g0780600+dfsg-3) ...
+Selecting previously unselected package libsasl2-2:amd64.
+Preparing to unpack .../25-libsasl2-2_2.1.27~101-g0780600+dfsg-3_amd64.deb ...
+Unpacking libsasl2-2:amd64 (2.1.27~101-g0780600+dfsg-3) ...
+Selecting previously unselected package libldap-common.
+Preparing to unpack .../26-libldap-common_2.4.44+dfsg-5_all.deb ...
+Unpacking libldap-common (2.4.44+dfsg-5) ...
+Selecting previously unselected package libldap-2.4-2:amd64.
+Preparing to unpack .../27-libldap-2.4-2_2.4.44+dfsg-5_amd64.deb ...
+Unpacking libldap-2.4-2:amd64 (2.4.44+dfsg-5) ...
+Selecting previously unselected package openssl.
+Preparing to unpack .../28-openssl_1.1.0f-3_amd64.deb ...
+Unpacking openssl (1.1.0f-3) ...
+Selecting previously unselected package ca-certificates.
+Preparing to unpack .../29-ca-certificates_20161130+nmu1_all.deb ...
+Unpacking ca-certificates (20161130+nmu1) ...
+Selecting previously unselected package libunistring0:amd64.
+Preparing to unpack .../30-libunistring0_0.9.6+really0.9.3-0.1_amd64.deb ...
+Unpacking libunistring0:amd64 (0.9.6+really0.9.3-0.1) ...
+Selecting previously unselected package libidn2-0:amd64.
+Preparing to unpack .../31-libidn2-0_0.16-1_amd64.deb ...
+Unpacking libidn2-0:amd64 (0.16-1) ...
+Selecting previously unselected package libnghttp2-14:amd64.
+Preparing to unpack .../32-libnghttp2-14_1.18.1-1_amd64.deb ...
+Unpacking libnghttp2-14:amd64 (1.18.1-1) ...
+Selecting previously unselected package libpsl5:amd64.
+Preparing to unpack .../33-libpsl5_0.17.0-3_amd64.deb ...
+Unpacking libpsl5:amd64 (0.17.0-3) ...
+Selecting previously unselected package librtmp1:amd64.
+Preparing to unpack .../34-librtmp1_2.4+20151223.gitfa8646d.1-1+b1_amd64.deb ...
+Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-1+b1) ...
+Selecting previously unselected package libssh2-1:amd64.
+Preparing to unpack .../35-libssh2-1_1.7.0-1_amd64.deb ...
+Unpacking libssh2-1:amd64 (1.7.0-1) ...
+Selecting previously unselected package libcurl3:amd64.
+Preparing to unpack .../36-libcurl3_7.52.1-5_amd64.deb ...
+Unpacking libcurl3:amd64 (7.52.1-5) ...
+Selecting previously unselected package curl.
+Preparing to unpack .../37-curl_7.52.1-5_amd64.deb ...
+Unpacking curl (7.52.1-5) ...
+Selecting previously unselected package dirmngr.
+Preparing to unpack .../38-dirmngr_2.1.18-6_amd64.deb ...
+Unpacking dirmngr (2.1.18-6) ...
+Selecting previously unselected package gnupg2.
+Preparing to unpack .../39-gnupg2_2.1.18-6_all.deb ...
+Unpacking gnupg2 (2.1.18-6) ...
+Selecting previously unselected package libsasl2-modules:amd64.
+Preparing to unpack .../40-libsasl2-modules_2.1.27~101-g0780600+dfsg-3_amd64.deb ...
+Unpacking libsasl2-modules:amd64 (2.1.27~101-g0780600+dfsg-3) ...
+Selecting previously unselected package gnupg-l10n.
+Preparing to unpack .../41-gnupg-l10n_2.1.18-6_all.deb ...
+Unpacking gnupg-l10n (2.1.18-6) ...
+Selecting previously unselected package publicsuffix.
+Preparing to unpack .../42-publicsuffix_20170424.0717-1_all.deb ...
+Unpacking publicsuffix (20170424.0717-1) ...
+Setting up libnpth0:amd64 (1.3-1) ...
+Setting up readline-common (7.0-3) ...
+Setting up libnettle6:amd64 (3.3-1+b1) ...
+Setting up libnghttp2-14:amd64 (1.18.1-1) ...
+Setting up libldap-common (2.4.44+dfsg-5) ...
+Setting up libreadline7:amd64 (7.0-3) ...
+Setting up libsasl2-modules-db:amd64 (2.1.27~101-g0780600+dfsg-3) ...
+Setting up libsasl2-2:amd64 (2.1.27~101-g0780600+dfsg-3) ...
+Setting up libksba8:amd64 (1.3.5-2) ...
+Setting up libtasn1-6:amd64 (4.10-1.1) ...
+Setting up gnupg-l10n (2.1.18-6) ...
+Setting up libssl1.0.2:amd64 (1.0.2l-2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.24.1 /usr/local/share/perl/5.24.1 /usr/lib/x86_64-linux-gnu/perl5/5.24 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.24 /usr/share/perl/5.24 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base .) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libgmp10:amd64 (2:6.1.2+dfsg-1) ...
+Setting up libssh2-1:amd64 (1.7.0-1) ...
+Setting up krb5-locales (1.15-1) ...
+Processing triggers for libc-bin (2.24-11+deb9u1) ...
+Setting up publicsuffix (20170424.0717-1) ...
+Setting up libunistring0:amd64 (0.9.6+really0.9.3-0.1) ...
+Setting up openssl (1.1.0f-3) ...
+Setting up libsqlite3-0:amd64 (3.16.2-5) ...
+Setting up libffi6:amd64 (3.2.1-6) ...
+Setting up libkeyutils1:amd64 (1.5.9-9) ...
+Setting up libsasl2-modules:amd64 (2.1.27~101-g0780600+dfsg-3) ...
+Setting up ca-certificates (20161130+nmu1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.24.1 /usr/local/share/perl/5.24.1 /usr/lib/x86_64-linux-gnu/perl5/5.24 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.24 /usr/share/perl/5.24 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base .) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Updating certificates in /etc/ssl/certs...
+166 added, 0 removed; done.
+Setting up libassuan0:amd64 (2.4.3-2) ...
+Setting up libidn11:amd64 (1.33-1) ...
+Setting up libidn2-0:amd64 (0.16-1) ...
+Setting up libpsl5:amd64 (0.17.0-3) ...
+Setting up libkrb5support0:amd64 (1.15-1) ...
+Setting up libhogweed4:amd64 (3.3-1+b1) ...
+Setting up libp11-kit0:amd64 (0.23.3-2) ...
+Setting up pinentry-curses (1.0.0-2) ...
+Setting up gnupg-agent (2.1.18-6) ...
+Setting up libk5crypto3:amd64 (1.15-1) ...
+Setting up gnupg (2.1.18-6) ...
+Setting up libgnutls30:amd64 (3.5.8-5+deb9u2) ...
+Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-1+b1) ...
+Setting up gnupg2 (2.1.18-6) ...
+Setting up libldap-2.4-2:amd64 (2.4.44+dfsg-5) ...
+Setting up libkrb5-3:amd64 (1.15-1) ...
+Setting up dirmngr (2.1.18-6) ...
+Setting up libgssapi-krb5-2:amd64 (1.15-1) ...
+Setting up libcurl3:amd64 (7.52.1-5) ...
+Setting up curl (7.52.1-5) ...
+Processing triggers for libc-bin (2.24-11+deb9u1) ...
+Processing triggers for ca-certificates (20161130+nmu1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+ ---> 8912d72ac0ed
+Removing intermediate container 68ce8d8d2eee
+Step 6 : RUN curl -sL https://deb.nodesource.com/setup_6.x | bash
+ ---> Running in b9f7cf28aa71
+
+## Installing the NodeSource Node.js v6.x repo...
+
+
+## Populating apt-get cache...
+
++ apt-get update
+Hit:1 http://nginx.org/packages/mainline/debian stretch InRelease
+Hit:2 http://security.debian.org stretch/updates InRelease
+Ign:3 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Hit:4 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+Hit:5 http://cdn-fastly.deb.debian.org/debian stretch Release
+Reading package lists...TING
+
+## Installing packages required for setup: apt-transport-https lsb-release...
+
++ apt-get install -y apt-transport-https lsb-release > /dev/null 2>&1
+
+## Confirming "stretch" is supported...
+
++ curl -sLf -o /dev/null 'https://deb.nodesource.com/node_6.x/dists/stretch/Release'
+
+## Adding the NodeSource signing key to your keyring...
+
++ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+Warning: apt-key output should not be parsed (stdout is not a terminal)
+> :bOKldFeImage
+
+## Creating apt sources list file for the NodeSource Node.js v6.x repo...
+
++ echo 'deb https://deb.nodesource.com/node_6.x stretch main' > /etc/apt/sources.list.d/nodesource.list
++ echo 'deb-src https://deb.nodesource.com/node_6.x stretch main' >> /etc/apt/sources.list.d/nodesource.list
+
+## Running `apt-get update` for you...
+
++ apt-get update
+Hit:1 http://security.debian.org stretch/updates InRelease
+Get:2 https://deb.nodesource.com/node_6.x stretch InRelease [4635 B]
+Hit:3 http://nginx.org/packages/mainline/debian stretch InRelease
+Get:6 https://deb.nodesource.com/node_6.x stretch/main Sources [766 B]
+Ign:4 http://cdn-fastly.deb.debian.org/debian stretch InRelease
+Get:7 https://deb.nodesource.com/node_6.x stretch/main amd64 Packages [961 B]
+Hit:5 http://cdn-fastly.deb.debian.org/debian stretch-updates InRelease
+Hit:8 http://cdn-fastly.deb.debian.org/debian stretch Release
+Fetched 6362 B in 3s (1623 B/s)
+Reading package lists...TING
+
+## Run `apt-get install nodejs` (as root) to install Node.js v6.x and npm
+
+ ---> e0e8f0556eb6
+Removing intermediate container b9f7cf28aa71
+Step 7 : RUN apt-get install -y nodejs
+ ---> Running in fba8bbad1f38
+Reading package lists...TING
+Building dependency tree...G
+Reading state information...
+The following NEW packages will be installed:
+  nodejs
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 10.2 MB of archives.
+After this operation, 51.2 MB of additional disk space will be used.
+Get:1 https://deb.nodesource.com/node_6.x stretch/main amd64 nodejs amd64 6.11.1-2nodesource1~stretch1 [10.2 MB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 10.2 MB in 12s (825 kB/s)
+Selecting previously unselected package nodejs.
+(Reading database ... 
+
+
+
+
+
+
+
+
+
+Preparing to unpack .../nodejs_6.11.1-2nodesource1~stretch1_amd64.deb ...
+Unpacking nodejs (6.11.1-2nodesource1~stretch1) ...
+Setting up nodejs (6.11.1-2nodesource1~stretch1) ...
+ ---> db1822579db2
+Removing intermediate container fba8bbad1f38
+Step 8 : RUN npm install -g @angular/cli@1.2.6
+ ---> Running in 52a2ae118054
+/usr/bin/ng -> /usr/lib/node_modules/@angular/cli/bin/ng
+
+> node-sass@4.5.3 install /usr/lib/node_modules/@angular/cli/node_modules/node-sass
+> node scripts/install.js
+
+Downloading binary from https://github.com/sass/node-sass/releases/download/v4.5.3/linux-x64-48_binding.node
+Download complete
+Binary saved to /usr/lib/node_modules/@angular/cli/node_modules/node-sass/vendor/linux-x64-48/binding.node
+
+> node-sass@4.5.3 postinstall /usr/lib/node_modules/@angular/cli/node_modules/node-sass
+> node scripts/build.js
+
+Binary found at /usr/lib/node_modules/@angular/cli/node_modules/node-sass/vendor/linux-x64-48/binding.node
+Testing binary
+Binary is fine
+/usr/lib
+`-- @angular/cli@1.2.6 
+  +-- @ngtools/json-schema@1.1.0 
+  +-- @ngtools/webpack@1.5.5 
+  | +-- loader-utils@1.1.0 
+  | | +-- big.js@3.1.3 
+  | | `-- emojis-list@2.1.0 
+  | +-- magic-string@0.22.4 
+  | | `-- vlq@0.2.2 
+  | `-- source-map@0.5.6 
+  +-- autoprefixer@6.7.7 
+  | +-- browserslist@1.7.7 
+  | | `-- electron-to-chromium@1.3.16 
+  | +-- caniuse-db@1.0.30000709 
+  | +-- normalize-range@0.1.2 
+  | +-- num2fraction@1.2.2 
+  | +-- postcss@5.2.17 
+  | | `-- chalk@1.1.3 
+  | |   `-- supports-color@2.0.0 
+  | `-- postcss-value-parser@3.3.0 
+  +-- chalk@2.0.1 
+  | +-- ansi-styles@3.2.0 
+  | | `-- color-convert@1.9.0 
+  | |   `-- color-name@1.1.3 
+  | +-- escape-string-regexp@1.0.5 
+  | `-- supports-color@4.2.1 
+  |   `-- has-flag@2.0.0 
+  +-- circular-dependency-plugin@3.0.0 
+  +-- common-tags@1.4.0 
+  | `-- babel-runtime@6.25.0 
+  |   +-- core-js@2.4.1 
+  |   `-- regenerator-runtime@0.10.5 
+  +-- core-object@3.1.3 
+  | `-- chalk@1.1.3 
+  |   +-- ansi-styles@2.2.1 
+  |   +-- has-ansi@2.0.0 
+  |   `-- supports-color@2.0.0 
+  +-- css-loader@0.28.4 
+  | +-- babel-code-frame@6.22.0 
+  | | +-- chalk@1.1.3 
+  | | | `-- supports-color@2.0.0 
+  | | +-- esutils@2.0.2 
+  | | `-- js-tokens@3.0.2 
+  | +-- css-selector-tokenizer@0.7.0 
+  | | +-- cssesc@0.1.0 
+  | | +-- fastparse@1.1.1 
+  | | `-- regexpu-core@1.0.0 
+  | |   +-- regenerate@1.3.2 
+  | |   +-- regjsgen@0.2.0 
+  | |   `-- regjsparser@0.1.5 
+  | |     `-- jsesc@0.5.0 
+  | +-- icss-utils@2.1.0 
+  | | `-- postcss@6.0.8 
+  | |   `-- supports-color@4.2.1 
+  | |     `-- has-flag@2.0.0 
+  | +-- lodash.camelcase@4.3.0 
+  | +-- object-assign@4.1.1 
+  | +-- postcss-modules-extract-imports@1.1.0 
+  | | `-- postcss@6.0.8 
+  | |   `-- supports-color@4.2.1 
+  | |     `-- has-flag@2.0.0 
+  | +-- postcss-modules-local-by-default@1.2.0 
+  | | `-- postcss@6.0.8 
+  | |   `-- supports-color@4.2.1 
+  | |     `-- has-flag@2.0.0 
+  | +-- postcss-modules-scope@1.1.0 
+  | | `-- postcss@6.0.8 
+  | |   `-- supports-color@4.2.1 
+  | |     `-- has-flag@2.0.0 
+  | +-- postcss-modules-values@1.3.0 
+  | | +-- icss-replace-symbols@1.1.0 
+  | | `-- postcss@6.0.8 
+  | |   `-- supports-color@4.2.1 
+  | |     `-- has-flag@2.0.0 
+  | `-- source-list-map@0.1.8 
+  +-- cssnano@3.10.0 
+  | +-- decamelize@1.2.0 
+  | +-- defined@1.0.0 
+  | +-- has@1.0.1 
+  | | `-- function-bind@1.1.0 
+  | +-- postcss-calc@5.3.1 
+  | | +-- postcss-message-helpers@2.0.0 
+  | | `-- reduce-css-calc@1.3.0 
+  | |   +-- balanced-match@0.4.2 
+  | |   +-- math-expression-evaluator@1.2.17 
+  | |   `-- reduce-function-call@1.0.2 
+  | +-- postcss-colormin@2.2.2 
+  | | `-- colormin@1.1.2 
+  | |   +-- color@0.11.4 
+  | |   | +-- clone@1.0.2 
+  | |   | `-- color-string@0.3.0 
+  | |   `-- css-color-names@0.0.4 
+  | +-- postcss-convert-values@2.6.1 
+  | +-- postcss-discard-comments@2.0.4 
+  | +-- postcss-discard-duplicates@2.1.0 
+  | +-- postcss-discard-empty@2.1.0 
+  | +-- postcss-discard-overridden@0.1.1 
+  | +-- postcss-discard-unused@2.2.3 
+  | | `-- uniqs@2.0.0 
+  | +-- postcss-filter-plugins@2.0.2 
+  | | `-- uniqid@4.1.1 
+  | |   `-- macaddress@0.2.8 
+  | +-- postcss-merge-idents@2.1.7 
+  | +-- postcss-merge-longhand@2.0.2 
+  | +-- postcss-merge-rules@2.1.2 
+  | | +-- caniuse-api@1.6.1 
+  | | | +-- lodash.memoize@4.1.2 
+  | | | `-- lodash.uniq@4.5.0 
+  | | +-- postcss-selector-parser@2.2.3 
+  | | | +-- flatten@1.0.2 
+  | | | +-- indexes-of@1.0.1 
+  | | | `-- uniq@1.0.1 
+  | | `-- vendors@1.0.1 
+  | +-- postcss-minify-font-values@1.0.5 
+  | +-- postcss-minify-gradients@1.0.5 
+  | +-- postcss-minify-params@1.2.2 
+  | | `-- alphanum-sort@1.0.2 
+  | +-- postcss-minify-selectors@2.1.1 
+  | +-- postcss-normalize-charset@1.1.1 
+  | +-- postcss-normalize-url@3.0.8 
+  | | +-- is-absolute-url@2.1.0 
+  | | `-- normalize-url@1.9.1 
+  | |   +-- prepend-http@1.0.4 
+  | |   +-- query-string@4.3.4 
+  | |   | `-- strict-uri-encode@1.1.0 
+  | |   `-- sort-keys@1.1.2 
+  | |     `-- is-plain-obj@1.1.0 
+  | +-- postcss-ordered-values@2.2.3 
+  | +-- postcss-reduce-idents@2.4.0 
+  | +-- postcss-reduce-initial@1.0.1 
+  | +-- postcss-reduce-transforms@1.0.4 
+  | +-- postcss-svgo@2.1.6 
+  | | +-- is-svg@2.1.0 
+  | | | `-- html-comment-regex@1.1.1 
+  | | `-- svgo@0.7.2 
+  | |   +-- coa@1.0.4 
+  | |   | `-- q@1.5.0 
+  | |   +-- colors@1.1.2 
+  | |   +-- csso@2.3.2 
+  | |   | `-- clap@1.2.0 
+  | |   |   `-- chalk@1.1.3 
+  | |   |     `-- supports-color@2.0.0 
+  | |   +-- js-yaml@3.7.0 
+  | |   | +-- argparse@1.0.9 
+  | |   | | `-- sprintf-js@1.0.3 
+  | |   | `-- esprima@2.7.3 
+  | |   +-- sax@1.2.4 
+  | |   `-- whet.extend@0.9.9 
+  | +-- postcss-unique-selectors@2.0.2 
+  | `-- postcss-zindex@2.2.0 
+  +-- denodeify@1.2.1 
+  +-- diff@3.3.0 
+  +-- ember-cli-normalize-entity-name@1.0.0 
+  +-- ember-cli-string-utils@1.1.0 
+  +-- exports-loader@0.6.4 
+  +-- extract-text-webpack-plugin@2.1.2 
+  | +-- async@2.5.0 
+  | +-- schema-utils@0.3.0 
+  | | `-- ajv@5.2.2 
+  | |   +-- fast-deep-equal@1.0.0 
+  | |   `-- json-schema-traverse@0.3.1 
+  | `-- webpack-sources@1.0.1 
+  |   `-- source-list-map@2.0.0 
+  +-- file-loader@0.10.1 
+  +-- fs-extra@4.0.1 
+  | +-- graceful-fs@4.1.11 
+  | +-- jsonfile@3.0.1 
+  | `-- universalify@0.1.1 
+  +-- get-caller-file@1.0.2 
+  +-- glob@7.1.2 
+  | +-- fs.realpath@1.0.0 
+  | +-- inflight@1.0.6 
+  | | `-- wrappy@1.0.2 
+  | +-- inherits@2.0.3 
+  | +-- once@1.4.0 
+  | `-- path-is-absolute@1.0.1 
+  +-- heimdalljs@0.2.5 
+  | `-- rsvp@3.2.1 
+  +-- heimdalljs-logger@0.1.9 
+  | `-- debug@2.6.8 
+  |   `-- ms@2.0.0 
+  +-- html-webpack-plugin@2.30.1 
+  | +-- bluebird@3.5.0 
+  | +-- html-minifier@3.5.3 
+  | | +-- camel-case@3.0.0 
+  | | | +-- no-case@2.3.1 
+  | | | | `-- lower-case@1.1.4 
+  | | | `-- upper-case@1.1.3 
+  | | +-- clean-css@4.1.7 
+  | | +-- commander@2.11.0 
+  | | +-- he@1.1.1 
+  | | +-- ncname@1.0.0 
+  | | | `-- xml-char-classes@1.0.0 
+  | | +-- param-case@2.1.1 
+  | | +-- relateurl@0.2.7 
+  | | `-- uglify-js@3.0.27 
+  | +-- loader-utils@0.2.17 
+  | +-- pretty-error@2.1.1 
+  | | +-- renderkid@2.0.1 
+  | | | +-- css-select@1.2.0 
+  | | | | +-- boolbase@1.0.0 
+  | | | | +-- css-what@2.1.0 
+  | | | | +-- domutils@1.5.1 
+  | | | | | `-- dom-serializer@0.1.0 
+  | | | | |   +-- domelementtype@1.1.3 
+  | | | | |   `-- entities@1.1.1 
+  | | | | `-- nth-check@1.0.1 
+  | | | +-- dom-converter@0.1.4 
+  | | | | `-- utila@0.3.3 
+  | | | +-- htmlparser2@3.3.0 
+  | | | | +-- domelementtype@1.3.0 
+  | | | | +-- domhandler@2.1.0 
+  | | | | +-- domutils@1.1.6 
+  | | | | `-- readable-stream@1.0.34 
+  | | | |   `-- isarray@0.0.1 
+  | | | `-- utila@0.3.3 
+  | | `-- utila@0.4.0 
+  | `-- toposort@1.0.3 
+  +-- inflection@1.12.0 
+  +-- inquirer@3.2.1 
+  | +-- ansi-escapes@2.0.0 
+  | +-- cli-cursor@2.1.0 
+  | | `-- restore-cursor@2.0.0 
+  | |   +-- onetime@2.0.1 
+  | |   | `-- mimic-fn@1.1.0 
+  | |   `-- signal-exit@3.0.2 
+  | +-- cli-width@2.1.0 
+  | +-- external-editor@2.0.4 
+  | | +-- iconv-lite@0.4.18 
+  | | +-- jschardet@1.5.0 
+  | | `-- tmp@0.0.31 
+  | +-- figures@2.0.0 
+  | +-- mute-stream@0.0.7 
+  | +-- run-async@2.3.0 
+  | | `-- is-promise@2.1.0 
+  | +-- rx-lite@4.0.8 
+  | +-- rx-lite-aggregates@4.0.8 
+  | +-- string-width@2.1.1 
+  | | +-- is-fullwidth-code-point@2.0.0 
+  | | `-- strip-ansi@4.0.0 
+  | |   `-- ansi-regex@3.0.0 
+  | +-- strip-ansi@4.0.0 
+  | | `-- ansi-regex@3.0.0 
+  | `-- through@2.3.8 
+  +-- isbinaryfile@3.0.2 
+  +-- istanbul-instrumenter-loader@2.0.0 
+  | +-- convert-source-map@1.5.0 
+  | +-- istanbul-lib-instrument@1.7.4 
+  | | +-- babel-generator@6.25.0 
+  | | | +-- babel-messages@6.23.0 
+  | | | +-- detect-indent@4.0.0 
+  | | | | `-- repeating@2.0.1 
+  | | | |   `-- is-finite@1.0.2 
+  | | | +-- jsesc@1.3.0 
+  | | | `-- trim-right@1.0.1 
+  | | +-- babel-template@6.25.0 
+  | | +-- babel-traverse@6.25.0 
+  | | | +-- globals@9.18.0 
+  | | | `-- invariant@2.2.2 
+  | | |   `-- loose-envify@1.3.1 
+  | | +-- babel-types@6.25.0 
+  | | | `-- to-fast-properties@1.0.3 
+  | | +-- babylon@6.17.4 
+  | | `-- istanbul-lib-coverage@1.1.1 
+  | `-- loader-utils@0.2.17 
+  +-- karma-source-map-support@1.2.0 
+  | `-- source-map-support@0.4.15 
+  +-- less@2.7.2 
+  | +-- errno@0.1.4 
+  | | `-- prr@0.0.0 
+  | +-- image-size@0.5.5 
+  | +-- mime@1.3.6 
+  | +-- mkdirp@0.5.1 
+  | | `-- minimist@0.0.8 
+  | +-- promise@7.3.1 
+  | | `-- asap@2.0.6 
+  | `-- request@2.81.0 
+  |   +-- aws-sign2@0.6.0 
+  |   +-- aws4@1.6.0 
+  |   +-- caseless@0.12.0 
+  |   +-- combined-stream@1.0.5 
+  |   | `-- delayed-stream@1.0.0 
+  |   +-- extend@3.0.1 
+  |   +-- forever-agent@0.6.1 
+  |   +-- form-data@2.1.4 
+  |   | `-- asynckit@0.4.0 
+  |   +-- har-validator@4.2.1 
+  |   | +-- ajv@4.11.8 
+  |   | `-- har-schema@1.0.5 
+  |   +-- hawk@3.1.3 
+  |   | +-- boom@2.10.1 
+  |   | +-- cryptiles@2.0.5 
+  |   | +-- hoek@2.16.3 
+  |   | `-- sntp@1.0.9 
+  |   +-- http-signature@1.1.1 
+  |   | +-- assert-plus@0.2.0 
+  |   | +-- jsprim@1.4.0 
+  |   | | +-- assert-plus@1.0.0 
+  |   | | +-- extsprintf@1.0.2 
+  |   | | +-- json-schema@0.2.3 
+  |   | | `-- verror@1.3.6 
+  |   | `-- sshpk@1.13.1 
+  |   |   +-- asn1@0.2.3 
+  |   |   +-- assert-plus@1.0.0 
+  |   |   +-- bcrypt-pbkdf@1.0.1 
+  |   |   +-- dashdash@1.14.1 
+  |   |   | `-- assert-plus@1.0.0 
+  |   |   +-- ecc-jsbn@0.1.1 
+  |   |   +-- getpass@0.1.7 
+  |   |   | `-- assert-plus@1.0.0 
+  |   |   +-- jsbn@0.1.1 
+  |   |   `-- tweetnacl@0.14.5 
+  |   +-- is-typedarray@1.0.0 
+  |   +-- isstream@0.1.2 
+  |   +-- json-stringify-safe@5.0.1 
+  |   +-- mime-types@2.1.16 
+  |   | `-- mime-db@1.29.0 
+  |   +-- oauth-sign@0.8.2 
+  |   +-- performance-now@0.2.0 
+  |   +-- qs@6.4.0 
+  |   +-- safe-buffer@5.1.1 
+  |   +-- stringstream@0.0.5 
+  |   +-- tough-cookie@2.3.2 
+  |   +-- tunnel-agent@0.6.0 
+  |   `-- uuid@3.1.0 
+  +-- less-loader@4.0.5 
+  | +-- clone@2.1.1 
+  | `-- pify@2.3.0 
+  +-- license-webpack-plugin@0.4.3 
+  +-- lodash@4.17.4 
+  +-- memory-fs@0.4.1 
+  | `-- readable-stream@2.3.3 
+  |   +-- core-util-is@1.0.2 
+  |   +-- isarray@1.0.0 
+  |   +-- process-nextick-args@1.0.7 
+  |   +-- string_decoder@1.0.3 
+  |   `-- util-deprecate@1.0.2 
+  +-- minimatch@3.0.4 
+  | `-- brace-expansion@1.1.8 
+  |   +-- balanced-match@1.0.0 
+  |   `-- concat-map@0.0.1 
+  +-- node-modules-path@1.0.1 
+  +-- node-sass@4.5.3 
+  | +-- async-foreach@0.1.3 
+  | +-- chalk@1.1.3 
+  | | `-- supports-color@2.0.0 
+  | +-- cross-spawn@3.0.1 
+  | | +-- lru-cache@4.1.1 
+  | | | +-- pseudomap@1.0.2 
+  | | | `-- yallist@2.1.2 
+  | | `-- which@1.3.0 
+  | |   `-- isexe@2.0.0 
+  | +-- gaze@1.1.2 
+  | | `-- globule@1.2.0 
+  | +-- get-stdin@4.0.1 
+  | +-- in-publish@2.0.0 
+  | +-- lodash.assign@4.2.0 
+  | +-- lodash.clonedeep@4.5.0 
+  | +-- lodash.mergewith@4.6.0 
+  | +-- meow@3.7.0 
+  | | +-- camelcase-keys@2.1.0 
+  | | | `-- camelcase@2.1.1 
+  | | +-- loud-rejection@1.6.0 
+  | | | `-- currently-unhandled@0.4.1 
+  | | |   `-- array-find-index@1.0.2 
+  | | +-- map-obj@1.0.1 
+  | | +-- minimist@1.2.0 
+  | | +-- normalize-package-data@2.4.0 
+  | | | +-- hosted-git-info@2.5.0 
+  | | | +-- is-builtin-module@1.0.0 
+  | | | | `-- builtin-modules@1.1.1 
+  | | | `-- validate-npm-package-license@3.0.1 
+  | | |   +-- spdx-correct@1.0.2 
+  | | |   | `-- spdx-license-ids@1.2.2 
+  | | |   `-- spdx-expression-parse@1.0.4 
+  | | +-- read-pkg-up@1.0.1 
+  | | | +-- find-up@1.1.2 
+  | | | | `-- path-exists@2.1.0 
+  | | | `-- read-pkg@1.1.0 
+  | | |   +-- load-json-file@1.1.0 
+  | | |   | `-- strip-bom@2.0.0 
+  | | |   |   `-- is-utf8@0.2.1 
+  | | |   `-- path-type@1.1.0 
+  | | +-- redent@1.0.0 
+  | | | +-- indent-string@2.1.0 
+  | | | `-- strip-indent@1.0.1 
+  | | `-- trim-newlines@1.0.0 
+  | +-- nan@2.6.2 
+  | +-- node-gyp@3.6.2 
+  | | +-- fstream@1.0.11 
+  | | +-- nopt@3.0.6 
+  | | +-- rimraf@2.6.1 
+  | | +-- semver@5.3.0 
+  | | `-- tar@2.2.1 
+  | |   `-- block-stream@0.0.9 
+  | +-- npmlog@4.1.2 
+  | | +-- are-we-there-yet@1.1.4 
+  | | | +-- delegates@1.0.0 
+  | | | `-- readable-stream@2.3.3 
+  | | |   +-- isarray@1.0.0 
+  | | |   `-- string_decoder@1.0.3 
+  | | +-- console-control-strings@1.1.0 
+  | | +-- gauge@2.7.4 
+  | | | +-- aproba@1.1.2 
+  | | | +-- has-unicode@2.0.1 
+  | | | +-- string-width@1.0.2 
+  | | | | `-- is-fullwidth-code-point@1.0.0 
+  | | | `-- wide-align@1.1.2 
+  | | |   `-- string-width@1.0.2 
+  | | |     `-- is-fullwidth-code-point@1.0.0 
+  | | `-- set-blocking@2.0.0 
+  | +-- sass-graph@2.2.4 
+  | | +-- scss-tokenizer@0.2.3 
+  | | | `-- source-map@0.4.4 
+  | | `-- yargs@7.1.0 
+  | |   +-- camelcase@3.0.0 
+  | |   +-- string-width@1.0.2 
+  | |   | `-- is-fullwidth-code-point@1.0.0 
+  | |   `-- yargs-parser@5.0.0 
+  | |     `-- camelcase@3.0.0 
+  | `-- stdout-stream@1.4.0 
+  |   `-- readable-stream@2.3.3 
+  |     +-- isarray@1.0.0 
+  |     `-- string_decoder@1.0.3 
+  +-- nopt@4.0.1 
+  | +-- abbrev@1.1.0 
+  | `-- osenv@0.1.4 
+  |   `-- os-homedir@1.0.2 
+  +-- opn@5.1.0 
+  | `-- is-wsl@1.1.0 
+  +-- portfinder@1.0.13 
+  | `-- async@1.5.2 
+  +-- postcss-loader@1.3.3 
+  | `-- postcss-load-config@1.2.0 
+  |   +-- cosmiconfig@2.2.2 
+  |   | +-- is-directory@0.3.1 
+  |   | +-- minimist@1.2.0 
+  |   | +-- parse-json@2.2.0 
+  |   | | `-- error-ex@1.3.1 
+  |   | |   `-- is-arrayish@0.2.1 
+  |   | `-- require-from-string@1.2.1 
+  |   +-- postcss-load-options@1.2.0 
+  |   `-- postcss-load-plugins@2.3.0 
+  +-- postcss-url@5.1.2 
+  | +-- directory-encoder@0.7.2 
+  | | +-- fs-extra@0.23.1 
+  | | | `-- jsonfile@2.4.0 
+  | | +-- handlebars@1.3.0 
+  | | | +-- optimist@0.3.7 
+  | | | | `-- wordwrap@0.0.3 
+  | | | `-- uglify-js@2.3.6 
+  | | |   +-- async@0.2.10 
+  | | |   `-- source-map@0.1.43 
+  | | `-- img-stats@0.5.2 
+  | |   `-- xmldom@0.1.27 
+  | `-- js-base64@2.1.9 
+  +-- raw-loader@0.5.1 
+  +-- resolve@1.4.0 
+  | `-- path-parse@1.0.5 
+  +-- rsvp@3.6.2 
+  +-- rxjs@5.4.2 
+  | `-- symbol-observable@1.0.4 
+  +-- sass-loader@6.0.6 
+  | +-- clone-deep@0.3.0 
+  | | +-- for-own@1.0.0 
+  | | | `-- for-in@1.0.2 
+  | | +-- is-plain-object@2.0.4 
+  | | | `-- isobject@3.0.1 
+  | | +-- kind-of@3.2.2 
+  | | | `-- is-buffer@1.1.5 
+  | | `-- shallow-clone@0.1.2 
+  | |   +-- is-extendable@0.1.1 
+  | |   +-- kind-of@2.0.1 
+  | |   +-- lazy-cache@0.2.7 
+  | |   `-- mixin-object@2.0.1 
+  | |     `-- for-in@0.1.8 
+  | +-- lodash.tail@4.1.1 
+  | `-- pify@3.0.0 
+  +-- script-loader@0.7.0 
+  +-- semver@5.4.1 
+  +-- silent-error@1.1.0 
+  +-- source-map-loader@0.2.1 
+  | +-- async@0.9.2 
+  | +-- loader-utils@0.2.17 
+  | `-- source-map@0.1.43 
+  |   `-- amdefine@1.0.1 
+  +-- style-loader@0.13.2 
+  +-- stylus@0.54.5 
+  | +-- css-parse@1.7.0 
+  | +-- glob@7.0.6 
+  | +-- sax@0.5.8 
+  | `-- source-map@0.1.43 
+  +-- stylus-loader@3.0.1 
+  | `-- when@3.6.4 
+  +-- temp@0.8.3 
+  | +-- os-tmpdir@1.0.2 
+  | `-- rimraf@2.2.8 
+  +-- typescript@2.3.4 
+  +-- url-loader@0.5.9 
+  +-- walk-sync@0.3.2 
+  | +-- ensure-posix-path@1.0.2 
+  | `-- matcher-collection@1.0.4 
+  +-- webpack@2.4.1 
+  | +-- acorn@5.1.1 
+  | +-- acorn-dynamic-import@2.0.2 
+  | | `-- acorn@4.0.13 
+  | +-- ajv@4.11.8 
+  | | +-- co@4.6.0 
+  | | `-- json-stable-stringify@1.0.1 
+  | |   `-- jsonify@0.0.0 
+  | +-- ajv-keywords@1.5.1 
+  | +-- enhanced-resolve@3.4.1 
+  | +-- interpret@1.0.3 
+  | +-- json-loader@0.5.7 
+  | +-- json5@0.5.1 
+  | +-- loader-runner@2.3.0 
+  | +-- loader-utils@0.2.17 
+  | +-- node-libs-browser@2.0.0 
+  | | +-- assert@1.4.1 
+  | | +-- browserify-zlib@0.1.4 
+  | | | `-- pako@0.2.9 
+  | | +-- buffer@4.9.1 
+  | | | +-- base64-js@1.2.1 
+  | | | +-- ieee754@1.1.8 
+  | | | `-- isarray@1.0.0 
+  | | +-- console-browserify@1.1.0 
+  | | | `-- date-now@0.1.4 
+  | | +-- constants-browserify@1.0.0 
+  | | +-- crypto-browserify@3.11.1 
+  | | | +-- browserify-cipher@1.0.0 
+  | | | | +-- browserify-aes@1.0.6 
+  | | | | | `-- buffer-xor@1.0.3 
+  | | | | +-- browserify-des@1.0.0 
+  | | | | | `-- des.js@1.0.0 
+  | | | | `-- evp_bytestokey@1.0.0 
+  | | | +-- browserify-sign@4.0.4 
+  | | | | +-- bn.js@4.11.7 
+  | | | | +-- browserify-rsa@4.0.1 
+  | | | | +-- elliptic@6.4.0 
+  | | | | | +-- brorand@1.1.0 
+  | | | | | +-- hash.js@1.1.3 
+  | | | | | +-- hmac-drbg@1.0.1 
+  | | | | | `-- minimalistic-crypto-utils@1.0.1 
+  | | | | `-- parse-asn1@5.1.0 
+  | | | |   `-- asn1.js@4.9.1 
+  | | | +-- create-ecdh@4.0.0 
+  | | | +-- create-hash@1.1.3 
+  | | | | +-- cipher-base@1.0.4 
+  | | | | +-- ripemd160@2.0.1 
+  | | | | | `-- hash-base@2.0.2 
+  | | | | `-- sha.js@2.4.8 
+  | | | +-- create-hmac@1.1.6 
+  | | | +-- diffie-hellman@5.0.2 
+  | | | | `-- miller-rabin@4.0.0 
+  | | | +-- pbkdf2@3.0.12 
+  | | | +-- public-encrypt@4.0.0 
+  | | | `-- randombytes@2.0.5 
+  | | +-- domain-browser@1.1.7 
+  | | +-- events@1.1.1 
+  | | +-- https-browserify@0.0.1 
+  | | +-- os-browserify@0.2.1 
+  | | +-- path-browserify@0.0.0 
+  | | +-- process@0.11.10 
+  | | +-- punycode@1.4.1 
+  | | +-- querystring-es3@0.2.1 
+  | | +-- readable-stream@2.3.3 
+  | | | +-- isarray@1.0.0 
+  | | | `-- string_decoder@1.0.3 
+  | | +-- stream-browserify@2.0.1 
+  | | | `-- readable-stream@2.3.3 
+  | | |   +-- isarray@1.0.0 
+  | | |   `-- string_decoder@1.0.3 
+  | | +-- stream-http@2.7.2 
+  | | | +-- builtin-status-codes@3.0.0 
+  | | | +-- readable-stream@2.3.3 
+  | | | | +-- isarray@1.0.0 
+  | | | | `-- string_decoder@1.0.3 
+  | | | +-- to-arraybuffer@1.0.1 
+  | | | `-- xtend@4.0.1 
+  | | +-- string_decoder@0.10.31 
+  | | +-- timers-browserify@2.0.3 
+  | | | +-- global@4.3.2 
+  | | | | +-- min-document@2.19.0 
+  | | | | | `-- dom-walk@0.1.1 
+  | | | | `-- process@0.5.2 
+  | | | `-- setimmediate@1.0.5 
+  | | +-- tty-browserify@0.0.0 
+  | | +-- url@0.11.0 
+  | | | +-- punycode@1.3.2 
+  | | | `-- querystring@0.2.0 
+  | | +-- util@0.10.3 
+  | | | `-- inherits@2.0.1 
+  | | `-- vm-browserify@0.0.4 
+  | |   `-- indexof@0.0.1 
+  | +-- supports-color@3.2.3 
+  | | `-- has-flag@1.0.0 
+  | +-- tapable@0.2.7 
+  | +-- uglify-js@2.8.29 
+  | | +-- uglify-to-browserify@1.0.2 
+  | | `-- yargs@3.10.0 
+  | |   +-- camelcase@1.2.1 
+  | |   +-- cliui@2.1.0 
+  | |   | +-- center-align@0.1.3 
+  | |   | | +-- align-text@0.1.4 
+  | |   | | | +-- longest@1.0.1 
+  | |   | | | `-- repeat-string@1.6.1 
+  | |   | | `-- lazy-cache@1.0.4 
+  | |   | +-- right-align@0.1.3 
+  | |   | `-- wordwrap@0.0.2 
+  | |   `-- window-size@0.1.0 
+  | +-- watchpack@1.4.0 
+  | +-- webpack-sources@0.2.3 
+  | | `-- source-list-map@1.1.2 
+  | `-- yargs@6.6.0 
+  |   +-- camelcase@3.0.0 
+  |   +-- cliui@3.2.0 
+  |   | `-- wrap-ansi@2.1.0 
+  |   |   `-- string-width@1.0.2 
+  |   |     `-- is-fullwidth-code-point@1.0.0 
+  |   +-- os-locale@1.4.0 
+  |   | `-- lcid@1.0.0 
+  |   |   `-- invert-kv@1.0.0 
+  |   +-- require-directory@2.1.1 
+  |   +-- require-main-filename@1.0.1 
+  |   +-- string-width@1.0.2 
+  |   | +-- code-point-at@1.1.0 
+  |   | `-- is-fullwidth-code-point@1.0.0 
+  |   |   `-- number-is-nan@1.0.1 
+  |   +-- which-module@1.0.0 
+  |   +-- y18n@3.2.1 
+  |   `-- yargs-parser@4.2.1 
+  |     `-- camelcase@3.0.0 
+  +-- webpack-dev-middleware@1.12.0 
+  | +-- range-parser@1.2.0 
+  | `-- time-stamp@2.0.0 
+  +-- webpack-dev-server@2.4.5 
+  | +-- ansi-html@0.0.7 
+  | +-- chokidar@1.7.0 
+  | | +-- anymatch@1.3.2 
+  | | | `-- normalize-path@2.1.1 
+  | | |   `-- remove-trailing-separator@1.0.2 
+  | | +-- async-each@1.0.1 
+  | | +-- glob-parent@2.0.0 
+  | | +-- is-binary-path@1.0.1 
+  | | | `-- binary-extensions@1.9.0 
+  | | +-- is-glob@2.0.1 
+  | | | `-- is-extglob@1.0.0 
+  | | `-- readdirp@2.1.0 
+  | |   +-- readable-stream@2.3.3 
+  | |   | +-- isarray@1.0.0 
+  | |   | `-- string_decoder@1.0.3 
+  | |   `-- set-immediate-shim@1.0.1 
+  | +-- compression@1.7.0 
+  | | +-- accepts@1.3.3 
+  | | | `-- negotiator@0.6.1 
+  | | +-- bytes@2.5.0 
+  | | +-- compressible@2.0.11 
+  | | +-- on-headers@1.0.1 
+  | | `-- vary@1.1.1 
+  | +-- connect-history-api-fallback@1.3.0 
+  | +-- express@4.15.3 
+  | | +-- array-flatten@1.1.1 
+  | | +-- content-disposition@0.5.2 
+  | | +-- content-type@1.0.2 
+  | | +-- cookie@0.3.1 
+  | | +-- cookie-signature@1.0.6 
+  | | +-- debug@2.6.7 
+  | | +-- depd@1.1.1 
+  | | +-- encodeurl@1.0.1 
+  | | +-- escape-html@1.0.3 
+  | | +-- etag@1.8.0 
+  | | +-- finalhandler@1.0.3 
+  | | | +-- debug@2.6.7 
+  | | | `-- unpipe@1.0.0 
+  | | +-- fresh@0.5.0 
+  | | +-- merge-descriptors@1.0.1 
+  | | +-- methods@1.1.2 
+  | | +-- on-finished@2.3.0 
+  | | | `-- ee-first@1.1.1 
+  | | +-- parseurl@1.3.1 
+  | | +-- path-to-regexp@0.1.7 
+  | | +-- proxy-addr@1.1.5 
+  | | | +-- forwarded@0.1.0 
+  | | | `-- ipaddr.js@1.4.0 
+  | | +-- send@0.15.3 
+  | | | +-- debug@2.6.7 
+  | | | +-- destroy@1.0.4 
+  | | | `-- mime@1.3.4 
+  | | +-- serve-static@1.12.3 
+  | | +-- setprototypeof@1.0.3 
+  | | +-- statuses@1.3.1 
+  | | +-- type-is@1.6.15 
+  | | | `-- media-typer@0.3.0 
+  | | `-- utils-merge@1.0.0 
+  | +-- html-entities@1.2.1 
+  | +-- http-proxy-middleware@0.17.4 
+  | | +-- http-proxy@1.16.2 
+  | | | +-- eventemitter3@1.2.0 
+  | | | `-- requires-port@1.0.0 
+  | | +-- is-glob@3.1.0 
+  | | | `-- is-extglob@2.1.1 
+  | | `-- micromatch@2.3.11 
+  | |   +-- arr-diff@2.0.0 
+  | |   | `-- arr-flatten@1.1.0 
+  | |   +-- array-unique@0.2.1 
+  | |   +-- braces@1.8.5 
+  | |   | +-- expand-range@1.8.2 
+  | |   | | `-- fill-range@2.2.3 
+  | |   | |   +-- is-number@2.1.0 
+  | |   | |   +-- isobject@2.1.0 
+  | |   | |   | `-- isarray@1.0.0 
+  | |   | |   `-- randomatic@1.1.7 
+  | |   | |     +-- is-number@3.0.0 
+  | |   | |     | `-- kind-of@3.2.2 
+  | |   | |     `-- kind-of@4.0.0 
+  | |   | +-- preserve@0.2.0 
+  | |   | `-- repeat-element@1.1.2 
+  | |   +-- expand-brackets@0.1.5 
+  | |   | `-- is-posix-bracket@0.1.1 
+  | |   +-- extglob@0.3.2 
+  | |   +-- filename-regex@2.0.1 
+  | |   +-- object.omit@2.0.1 
+  | |   | `-- for-own@0.1.5 
+  | |   +-- parse-glob@3.0.4 
+  | |   | +-- glob-base@0.3.0 
+  | |   | `-- is-dotfile@1.0.3 
+  | |   `-- regex-cache@0.4.3 
+  | |     +-- is-equal-shallow@0.1.3 
+  | |     `-- is-primitive@2.0.0 
+  | +-- opn@4.0.2 
+  | | `-- pinkie-promise@2.0.1 
+  | |   `-- pinkie@2.0.4 
+  | +-- serve-index@1.9.0 
+  | | +-- batch@0.6.1 
+  | | `-- http-errors@1.6.1 
+  | |   `-- depd@1.1.0 
+  | +-- sockjs@0.3.18 
+  | | +-- faye-websocket@0.10.0 
+  | | | `-- websocket-driver@0.6.5 
+  | | |   `-- websocket-extensions@0.1.1 
+  | | `-- uuid@2.0.3 
+  | +-- sockjs-client@1.1.2 
+  | | +-- eventsource@0.1.6 
+  | | | `-- original@1.0.0 
+  | | |   `-- url-parse@1.0.5 
+  | | |     `-- querystringify@0.0.4 
+  | | +-- faye-websocket@0.11.1 
+  | | +-- json3@3.3.2 
+  | | `-- url-parse@1.1.9 
+  | |   `-- querystringify@1.0.0 
+  | +-- spdy@3.4.7 
+  | | +-- handle-thing@1.2.5 
+  | | +-- http-deceiver@1.2.7 
+  | | +-- select-hose@2.0.0 
+  | | `-- spdy-transport@2.0.20 
+  | |   +-- detect-node@2.0.3 
+  | |   +-- hpack.js@2.1.6 
+  | |   | `-- readable-stream@2.3.3 
+  | |   |   +-- isarray@1.0.0 
+  | |   |   `-- string_decoder@1.0.3 
+  | |   +-- obuf@1.1.1 
+  | |   +-- readable-stream@2.3.3 
+  | |   | +-- isarray@1.0.0 
+  | |   | `-- string_decoder@1.0.3 
+  | |   `-- wbuf@1.7.2 
+  | |     `-- minimalistic-assert@1.0.0 
+  | +-- strip-ansi@3.0.1 
+  | | `-- ansi-regex@2.1.1 
+  | `-- yargs@6.6.0 
+  |   +-- camelcase@3.0.0 
+  |   +-- cliui@3.2.0 
+  |   | `-- string-width@1.0.2 
+  |   |   `-- is-fullwidth-code-point@1.0.0 
+  |   +-- string-width@1.0.2 
+  |   | `-- is-fullwidth-code-point@1.0.0 
+  |   `-- yargs-parser@4.2.1 
+  +-- webpack-merge@2.6.1 
+  `-- zone.js@0.8.16 
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules/@angular/cli/node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+     ---> 1fe536e348ac
+Removing intermediate container 52a2ae118054
+Step 9 : WORKDIR /opt/src/eventer
+ ---> Running in c1e07c5a4f70
+ ---> 0a06dcb411db
+Removing intermediate container c1e07c5a4f70
+Step 10 : RUN ng build
+ ---> Running in fe72a9cdd76b
+  0% comp 10% building modules 2/2 modules   76% basic chunk optimization pass 3               86% ha 92% chunk asset Hash: d26a2464794a9c5566f2--> 0% EXECUTING
+Time: 12402msge
+chunk    {0} main.bundle.js, main.bundle.js.map (main) 8.53 kB {2} [initial] [rendered]
+chunk    {1} styles.bundle.js, styles.bundle.js.map (styles) 10.5 kB {3} [initial] [rendered]
+chunk    {2} vendor.bundle.js, vendor.bundle.js.map (vendor) 2.42 MB [initial] [rendered]
+chunk    {3} inline.bundle.js, inline.bundle.js.map (inline) 0 bytes [entry] [rendered]
+ ---> 84c1b6d423a2
+Removing intermediate container fe72a9cdd76b
+Step 11 : RUN cp -r dist/* /usr/share/nginx/html
+ ---> Running in c6b84e3ee09f
+ ---> 27611fd84256
+Removing intermediate container c6b84e3ee09f
+Successfully built 27611fd84256
+
+BUILD SUCCESSFUL
+
+Total time: 12 mins 2.599 secs
+----
+
+Images
+----
+[vagrant@localhost spring-boot-redis-k8s]$ docker images gcr.io/cloudjlb-eventer/*
+REPOSITORY                                TAG                 IMAGE ID            CREATED             SIZE
+gcr.io/cloudjlb-eventer/web-frontend      latest              27611fd84256        About a minute ago   534.7 MB
+gcr.io/cloudjlb-eventer/spring-boot-app   latest              6595f7a60804        2 hours ago          522.5 MB
+gcr.io/cloudjlb-eventer/redis-sentinel    latest              5d5bdcb887a8        35 hours ago         105.9 MB
+----
